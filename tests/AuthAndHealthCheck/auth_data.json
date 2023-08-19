@@ -1,0 +1,6 @@
+{
+  "body_create_auth_token": {
+    "username" : "admin",
+    "password" : "password123"
+  }
+}
