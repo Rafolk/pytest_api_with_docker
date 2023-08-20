@@ -2,7 +2,7 @@ import pytest
 import json
 import os
 import io
-from tests.config.configuration import get_all_booking_ids_url
+from tests.config.configuration import get_or_create_booking_url
 from utils.http_methods import HttpMethods
 
 
@@ -31,7 +31,7 @@ def check_booking_ids():
 @pytest.fixture(scope='session')
 # Фикстура для получения существующего ID
 def get_exist_booking_ids():
-    response = HttpMethods.get(get_all_booking_ids_url)
+    response = HttpMethods.get(get_or_create_booking_url)
     assert response.status_code == 200, f'Не удалось получить существующий ID, статус-код = {response.status_code}'
     json_list = response.json()
     get_element = json_list[0]

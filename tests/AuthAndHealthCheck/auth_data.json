@@ -1,9 +1,9 @@
 {
-  "body_create_auth_token": {
+  "body_for_create_auth_token": {
     "username" : "admin",
     "password" : "password123"
   },
-  "body_create_auth_token_with_bad_credentials": {
+  "body_for_create_auth_token_with_bad_credentials": {
     "username" : "111admin",
     "password" : "111password123"
   },

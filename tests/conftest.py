@@ -23,9 +23,7 @@ def check_json_key_value():
         if check_non_empty:
             assert json_key_value is not None and json_key_value != "", \
                 f'Ошибка проверки непустого значения ключа {key_name}, фактическое значение: {json_key_value}'
-            print("\nЗашли в проверку непустого значения")
             return 0
         assert json_key_value == expected_json_key_value, \
             f'Ошибка проверки содержимого ключа {key_name}, фактическое значение: {json_key_value}'
-        print("Зашли в проверку жёсткого сравнения")
     return function_check_json_key_value

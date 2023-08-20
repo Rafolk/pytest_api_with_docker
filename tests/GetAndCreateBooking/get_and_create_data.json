@@ -1,14 +1,13 @@
 {
-  "body_create_auth_token": {
-    "username" : "admin",
-    "password" : "password123"
-  },
-  "body_create_auth_token_with_bad_credentials": {
-    "username" : "111admin",
-    "password" : "111password123"
-  },
-  "expected_response_create_auth_token_with_bad_credentials":
-  {
-    "reason": "Bad credentials"
-  }
+    "body_for_create_booking": {
+    "firstname" : "Jim",
+    "lastname" : "Brown",
+    "totalprice" : 111,
+    "depositpaid" : true,
+    "bookingdates" : {
+        "checkin" : "2018-01-01",
+        "checkout" : "2019-01-01"
+        },
+    "additionalneeds" : "Breakfast"
+    }
 }
