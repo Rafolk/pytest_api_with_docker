@@ -11,3 +11,8 @@ pip3 install -r requirements.txt
 Отписать про API - https://github.com/mwinteringham/restful-booker
 
 Надо сделать разные тесты - позитивные/негативные, с возможностью последовательного запуска и выборочного запуска, плюс отчёт в ALURE
+
+Должен работать запуск командой из корня проекта - `python -m pytest -sv`
+
+И в конце - `pip freeze > requirements.txt`
+
