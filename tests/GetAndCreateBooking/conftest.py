@@ -29,16 +29,6 @@ def check_booking_ids():
 
 
 @pytest.fixture(scope='session')
-# Фикстура для получения существующего ID
-def get_exist_booking_ids():
-    response = HttpMethods.get(get_or_create_booking_url)
-    assert response.status_code == 200, f'Не удалось получить существующий ID, статус-код = {response.status_code}'
-    json_list = response.json()
-    get_element = json_list[0]
-    exist_id = get_element.get("bookingid")
-    return exist_id
-
-@pytest.fixture(scope='session')
 # Вложенная в фикстуру функция для проверки типов данных значений ключей ответа на get-апрос
 def check_type_data_key_value():
     def function_check_type_data_key_value(response):

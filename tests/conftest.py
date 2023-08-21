@@ -1,6 +1,31 @@
 import pytest
 import json
+from tests.config.configuration import get_or_create_booking_url, auth_token_url
+from utils.http_methods import HttpMethods
 
+
+@pytest.fixture(scope='session')
+def auth_token_in_cookie():
+    auth_data = {
+        "username": "admin",
+        "password": "password123"
+        }
+    response = HttpMethods.post(auth_token_url, body=auth_data)
+    auth_token = response.json()['token']
+    cookies = {
+        "token": auth_token
+    }
+    return cookies
+
+@pytest.fixture(scope='session')
+# Фикстура для получения существующего ID
+def get_exist_booking_ids():
+    response = HttpMethods.get(get_or_create_booking_url)
+    assert response.status_code == 200, f'Не удалось получить существующий ID, статус-код = {response.status_code}'
+    json_list = response.json()
+    get_element = json_list[0]
+    exist_id = get_element.get("bookingid")
+    return exist_id
 
 @pytest.fixture(scope='session')
 # Вложенная в фикстуру функция для проверки списка ключей

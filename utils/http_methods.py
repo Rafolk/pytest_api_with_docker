@@ -3,25 +3,34 @@ import requests
 
 # Список кастомных http-методов
 class HttpMethods:
-    headers = {'Content-Type': 'application/json'}
-    cookies = ""
+    default_headers = {'Content-Type': 'application/json'}
+    default_cookies = ""
+
 
     @staticmethod
-    def get(url):
-        result = requests.get(url, headers=HttpMethods.headers, cookies=HttpMethods.cookies)
+    def get(url, headers=None, cookies=None):
+        headers = headers or HttpMethods.default_headers
+        cookies = cookies or HttpMethods.default_cookies
+        result = requests.get(url, headers=headers, cookies=cookies)
         return result
 
     @staticmethod
-    def post(url, body, headers=None):
-        result = requests.post(url, json=body, headers=HttpMethods.headers, cookies=HttpMethods.cookies)
+    def post(url, body, headers=None, cookies=None):
+        headers = headers or HttpMethods.default_headers
+        cookies = cookies or HttpMethods.default_cookies
+        result = requests.post(url, json=body, headers=headers, cookies=cookies)
         return result
 
     @staticmethod
-    def put(url, body):
-        result = requests.put(url, json=body, headers=HttpMethods.headers, cookies=HttpMethods.cookies)
+    def put(url, body, headers=None, cookies=None):
+        headers = headers or HttpMethods.default_headers
+        cookies = cookies or HttpMethods.default_cookies
+        result = requests.put(url, json=body, headers=headers, cookies=cookies)
         return result
 
     @staticmethod
-    def delete(url, body):
-        result = requests.delete(url, json=body, headers=HttpMethods.headers, cookies=HttpMethods.cookies)
+    def delete(url, body, headers=None, cookies=None):
+        headers = headers or HttpMethods.default_headers
+        cookies = cookies or HttpMethods.default_cookies
+        result = requests.delete(url, json=body, headers=headers, cookies=cookies)
         return result
