@@ -29,7 +29,14 @@ class HttpMethods:
         return result
 
     @staticmethod
-    def delete(url, body, headers=None, cookies=None):
+    def patch(url, body, headers=None, cookies=None):
+        headers = headers or HttpMethods.default_headers
+        cookies = cookies or HttpMethods.default_cookies
+        result = requests.patch(url, json=body, headers=headers, cookies=cookies)
+        return result
+
+    @staticmethod
+    def delete(url, body=None, headers=None, cookies=None):
         headers = headers or HttpMethods.default_headers
         cookies = cookies or HttpMethods.default_cookies
         result = requests.delete(url, json=body, headers=headers, cookies=cookies)

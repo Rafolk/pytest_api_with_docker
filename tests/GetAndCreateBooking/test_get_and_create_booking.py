@@ -6,7 +6,7 @@ from utils.http_methods import HttpMethods
 class TestGetAndCreateBooking:
 
     @pytest.mark.positive
-    def test_get_Get_All_Booking_Ids_expected_200(self, check_booking_ids):
+    def test_Get_All_Booking_Ids_expected_200(self, check_booking_ids):
         response = HttpMethods.get(get_or_create_booking_url)
         assert response.status_code == 200, f'Статус-код некорректен, фактическое значение = {response.status_code}'
         check_booking_ids(response)
@@ -14,8 +14,8 @@ class TestGetAndCreateBooking:
     # Тут должны быть тесты с дополнительными параметрами запроса
 
     @pytest.mark.positive
-    def test_get_Get_Current_Booking_expected_200(self, get_exist_booking_ids, check_json_key, check_type_data_key_value):
-        link_for_get_current_booking = get_or_update_and_delete_booking_url + str(get_exist_booking_ids)
+    def test_Get_Current_Booking_expected_200(self, get_exist_booking_ids, check_json_key, check_type_data_key_value):
+        link_for_get_current_booking = get_or_update_and_delete_booking_url + str(get_exist_booking_ids(0))
         response = HttpMethods.get(link_for_get_current_booking)
         assert response.status_code == 200, f'Статус-код некорректен, фактическое значение = {response.status_code}'
         check_type_data_key_value(response)
@@ -33,5 +33,5 @@ class TestGetAndCreateBooking:
         link_for_check_post = get_or_update_and_delete_booking_url + str(response_json.get("bookingid"))
         check_post = HttpMethods.get(link_for_check_post)
         assert get_and_create_data["body_for_create_booking"] == check_post.json(), \
-            f'Get-запрос о свежесозданном бронировании содержит некорректную информацию, фактическимй ответ:\n ' \
+            f'Get-запрос о свежесозданном бронировании содержит некорректную информацию, фактический ответ:\n ' \
             f'{response.text}'
