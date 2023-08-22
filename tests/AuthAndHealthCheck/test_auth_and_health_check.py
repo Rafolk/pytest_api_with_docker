@@ -3,7 +3,8 @@ import pytest
 from tests.config.configuration import health_check_url, auth_token_url
 from utils.http_methods import HttpMethods
 
-@allure.epic("Секция тестирования аутентификации и health-сheck")
+
+@allure.epic("Секция проверки аутентификации и health-сheck")
 class TestAuthAndHealthCheck:
 
     @allure.description("Проверка health-сheck")

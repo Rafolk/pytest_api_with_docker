@@ -11,3 +11,13 @@ requests==2.31.0
 tomli==2.0.1
 urllib3==2.0.4
 allure-pytest==2.13.2
+allure-python-commons==2.13.2
+attrs==19.3.0
+importlib-metadata==1.5.0
+more-itertools==8.2.0
+py==1.8.1
+pyparsing==2.4.6
+pytest-runner==5.2
+six==1.14.0
+wcwidth==0.1.8
+zipp==3.0.0

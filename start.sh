@@ -1,16 +1,20 @@
 #!/bin/bash
 
+# В планах добавить:
+# pip3 install -r requirements.txt
+# запуск тестов после старта контейнеров
+
 help_message="Usage: start.sh [Options]
 
 Options:
-    --start           start API container;
-    --stop            stop API container;
-    --reboot          reboot API container."
+    --start           		start all container - API and Allure services and tests;
+    --stop            		stop all container;
+    --reboot_api          reboot API container."
 
 #flags:
 fl_start=false
 fl_stop=false
-fl_reboot=false
+fl_reboot_api=false
 
 while test $# -gt 0
 do
@@ -39,16 +43,16 @@ do
                 fl_stop=true
             fi
             ;;
-        --reboot)
-            if $fl_reboot
+        --reboot_api)
+            if $fl_reboot_api
             then
                 echo "Invalid flag."
                 echo "$help_message"
                 exit 1
             fi
-            if ! $fl_reboot
+            if ! $fl_reboot_api
             then
-                fl_reboot=true
+                fl_reboot_api=true
             fi
             ;;
         --help|-h)
@@ -64,26 +68,26 @@ do
     shift
 done
 
-# Start API container
+# start all container - API and Allure services
 if [ "$fl_start" = true ]; then
-    docker run -d -p 3001:3001 rafolk/training_api:latest &&
-	  echo "API-container has been launched."
+    docker-compose up -d allure allure-ui test-api &&
+	  echo "API and Allure services has been launched." #&&
+	  #python -m pytest tests/. --alluredir=allure-results &&
+	  #echo "The tests were completed."
 fi
 
-# Stop API container
+# stop all container
 if [ "$fl_stop" = true ]; then
-    docker ps -f 'publish=3001' -q | xargs docker rm -f &&
-	  echo "API-container was deleted."
+    docker-compose down && rm -rf ./allure-re* &&
+	  echo "All container was deleted."
 fi
 
-# Reboot API container
-if [ "$fl_reboot" = true ]; then
+# reboot API container
+if [ "$fl_reboot_api" = true ]; then
     docker ps -f 'publish=3001' -q | xargs docker rm -f &&
 	  echo "API-container was deleted." &&
-	  docker run -d -p 3001:3001 rafolk/training_api:latest &&
+	  docker-compose up -d test-api &&
 	  echo "API-container has been launched."
 fi
 
 exit 0
-
-# pip3 install -r requirements.txt

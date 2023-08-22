@@ -4,7 +4,7 @@ from tests.config.configuration import get_or_create_booking_url, get_or_update_
 from utils.http_methods import HttpMethods
 
 
-@allure.epic("Секция тестирования получения информации о бронировании и его создания")
+@allure.epic("Секция проверки получения информации о бронировании и его создания")
 class TestGetAndCreateBooking:
 
     @allure.description("Проверка получения Id всех доступных бронирований")

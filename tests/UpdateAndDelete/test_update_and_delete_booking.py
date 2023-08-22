@@ -1,12 +1,13 @@
-import json
-
+import allure
 import pytest
 from tests.config.configuration import get_or_update_and_delete_booking_url
 from utils.http_methods import HttpMethods
 
 
-class TestGetAndCreateBooking:
+@allure.epic("Секция проверки обновления и удаления бронирования")
+class TestUpdateAndDeleteBooking:
 
+    @allure.description("Проверка полного обновления бронирования")
     @pytest.mark.positive
     def test_put_Update_Booking_expected_200(self, update_and_delete_data, get_exist_booking_ids, auth_token_in_cookie):
         link_for_update_current_booking = get_or_update_and_delete_booking_url + str(get_exist_booking_ids(0))
@@ -20,7 +21,7 @@ class TestGetAndCreateBooking:
             f'Get-запрос о свежесозданном бронировании содержит некорректную информацию, фактический ответ:\n ' \
             f'{response.text}'
 
-
+    @allure.description("Проверка частичного обновления бронирования")
     @pytest.mark.positive
     def test_patch_Partial_Update_Booking_expected_200(self, update_and_delete_data, get_exist_booking_ids,
                                               auth_token_in_cookie, check_partial_update):
@@ -36,6 +37,7 @@ class TestGetAndCreateBooking:
             f'Get-запрос о свежесозданном бронировании содержит некорректную информацию, фактический ответ:\n ' \
             f'{response.text}'
 
+    @allure.description("Проверка удаления бронирования")
     @pytest.mark.positive
     def test_Delete_Booking_expected_201(self, get_exist_booking_ids, auth_token_in_cookie):
         link_for_delete_booking = get_or_update_and_delete_booking_url + str(get_exist_booking_ids(5))
