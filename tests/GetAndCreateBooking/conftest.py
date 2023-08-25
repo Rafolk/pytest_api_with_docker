@@ -2,8 +2,6 @@ import pytest
 import json
 import os
 import io
-from tests.config.configuration import get_or_create_booking_url
-from utils.http_methods import HttpMethods
 
 
 @pytest.fixture(scope='session')

@@ -72,7 +72,7 @@ fi
 
 # stop all container
 if [ "$fl_stop" = true ]; then
-    docker-compose down && rm -rf ./allure-re* &&
+    docker-compose down && rm -rf ./allure-re* && docker rmi pytest_api_with_docker-autotest-container &&
 	  echo "All container was deleted."
 fi
 
@@ -80,7 +80,7 @@ fi
 if [ "$fl_reboot_api" = true ]; then
     docker ps -f 'publish=3001' -q | xargs docker rm -f &&
 	  echo "API-container was deleted." &&
-	  docker-compose up -d test-api && docker rmi pytest_api_with_docker-autotest-container &&
+	  docker-compose up -d test-api &&
 	  echo "API-container has been launched."
 fi
 

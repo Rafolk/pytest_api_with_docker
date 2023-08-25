@@ -11,7 +11,7 @@ def update_and_delete_data():
         return json.load(json_file)
 
 @pytest.fixture(scope='session')
-# Фикстура для получения существующего ID
+# Фикстура для проверки частичного обновления
 def check_partial_update():
     def function_check_partial_update(response):
         get_json = response.json()

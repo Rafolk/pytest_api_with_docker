@@ -24,6 +24,11 @@ services:
     image: "rafolk/training_api:latest"
     ports:
       - "3001:3001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3001/ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
   autotest-container:
     build: .
@@ -31,8 +36,5 @@ services:
     volumes:
       - ./allure-results:/usr/tests/allure-results
     depends_on:
-      - test-api
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3001" ]
-      interval: 1s
-      timeout: 15s
+        test-api:
+          condition: service_healthy
