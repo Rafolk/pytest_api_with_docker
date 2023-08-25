@@ -1,0 +1,12 @@
+venv
+*.md
+__pycache__
+.idea
+allure-re*
+trash
+.dockerignore
+.gitignore
+docker-compose.yml
+Dockerfile
+LICENSE
+start.sh

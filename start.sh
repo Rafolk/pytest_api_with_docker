@@ -1,13 +1,9 @@
 #!/bin/bash
 
-# В планах добавить:
-# pip3 install -r requirements.txt
-# запуск тестов после старта контейнеров
-
 help_message="Usage: start.sh [Options]
 
 Options:
-    --start           		start all container - API and Allure services and tests;
+    --start           		start all container - API and Allure services and tests in container;
     --stop            		stop all container;
     --reboot_api          reboot API container."
 
@@ -70,10 +66,8 @@ done
 
 # start all container - API and Allure services
 if [ "$fl_start" = true ]; then
-    docker-compose up -d allure allure-ui test-api &&
-	  echo "API and Allure services has been launched." #&&
-	  #python -m pytest tests/. --alluredir=allure-results &&
-	  #echo "The tests were completed."
+    docker-compose up -d allure allure-ui test-api autotest-container &&
+	  echo "API, Allure services and tests in container has been launched."
 fi
 
 # stop all container
@@ -86,7 +80,7 @@ fi
 if [ "$fl_reboot_api" = true ]; then
     docker ps -f 'publish=3001' -q | xargs docker rm -f &&
 	  echo "API-container was deleted." &&
-	  docker-compose up -d test-api &&
+	  docker-compose up -d test-api && docker rmi pytest_api_with_docker-autotest-container &&
 	  echo "API-container has been launched."
 fi
 
