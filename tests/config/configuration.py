@@ -9,4 +9,4 @@ get_or_create_booking_url = main_url + "/booking"
 get_or_update_and_delete_booking_url = main_url + "/booking/"
 
 # DemoTestDatabase
-database_connection = "dbname=MB4 user=postgres password=mysecretpassword host=localhost port=6532"
+database_connection = "dbname=postgres user=postgres password=mysecretpassword host=localhost port=6432"

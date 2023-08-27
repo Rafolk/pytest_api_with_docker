@@ -5,7 +5,6 @@ import pytest
 @allure.epic("Секция демо-тестов базы данных")
 class TestDemoDatabase:
 
-    # @pytest.mark.skip("Таблица уже была создана ранее.")
     @allure.description("Проверка создания таблицы.")
     @pytest.mark.positive
     def test_Create_Table(self, db_connection):
@@ -18,7 +17,6 @@ class TestDemoDatabase:
         assert db_connection.statusmessage == "CREATE TABLE", f'Возникла ошибка при создании таблицы:\n' \
                                                               f' {db_connection.statusmessage}'
 
-    # @pytest.mark.skip("В разработке.")
     @allure.description("Проверка созданной ранее таблицы.")
     @pytest.mark.positive
     def test_Check_Create_Table(self, db_connection):

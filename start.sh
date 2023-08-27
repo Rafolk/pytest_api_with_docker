@@ -66,7 +66,7 @@ done
 
 # start all container - API and Allure services
 if [ "$fl_start" = true ]; then
-    docker-compose up -d allure allure-ui test-api autotest-container &&
+    docker-compose up -d &&
 	  echo "API, Allure services and tests in container has been launched."
 fi
 

@@ -2,7 +2,7 @@ version: '3'
 
 services:
   allure:
-    image: "frankescobar/allure-docker-service"
+    image: frankescobar/allure-docker-service
     environment:
       CHECK_RESULTS_EVERY_SECONDS: 1
       KEEP_HISTORY: 1
@@ -13,7 +13,7 @@ services:
       - ${PWD}/allure-reports:/app/default-reports
 
   allure-ui:
-    image: "frankescobar/allure-docker-service-ui"
+    image: frankescobar/allure-docker-service-ui
     environment:
       ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:5050"
       ALLURE_DOCKER_PUBLIC_API_URL_PREFIX: ""
@@ -21,7 +21,7 @@ services:
       - "5252:5252"
 
   test-api:
-    image: "rafolk/training_api:latest"
+    image: rafolk/training_api:latest
     ports:
       - "3001:3001"
     healthcheck:
@@ -38,3 +38,30 @@ services:
     depends_on:
         test-api:
           condition: service_healthy
+        postgres-db:
+          condition: service_healthy
+
+  postgres-db:
+    image: postgres:14.7-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+    - "6432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "postgres" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4:7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@admin.com
+      PGADMIN_DEFAULT_PASSWORD: mysecretpassword
+    ports:
+      - "5550:80"
+    restart: always
