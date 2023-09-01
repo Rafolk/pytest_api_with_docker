@@ -1,6 +1,6 @@
 import allure
 import pytest
-from tests.config.configuration import get_or_create_booking_url, get_or_update_and_delete_booking_url
+from tests.config.configuration import get_all_ids_or_create_booking_url, get_or_update_and_delete_booking_url
 from utils.http_methods import HttpMethods
 
 
@@ -10,11 +10,19 @@ class TestGetAndCreateBooking:
     @allure.description("Проверка получения Id всех доступных бронирований")
     @pytest.mark.positive
     def test_Get_All_Booking_Ids_expected_200(self, check_booking_ids):
-        response = HttpMethods.get(get_or_create_booking_url)
+        response = HttpMethods.get(get_all_ids_or_create_booking_url)
         assert response.status_code == 200, f'Статус-код некорректен, фактическое значение = {response.status_code}'
         check_booking_ids(response)
 
-    # Тут должны быть тесты с дополнительными параметрами запроса
+    @allure.description("Проверка параметризации запроса методом чёрного ящика")
+    @pytest.mark.positive
+    def test_Get_parametrize_name_Booking_expected_200(self, get_parametrize_value):
+        new_link = get_all_ids_or_create_booking_url + f'?firstname={get_parametrize_value["firstname"]}&lastname={get_parametrize_value["lastname"]}'
+        response = HttpMethods.get(new_link)
+        assert response.status_code == 200, f'Статус-код некорректен, фактическое значение = {response.status_code}'
+
+    # Тут скоро будут добавлены более тщательные проверки ответа, а так же тесты с дополнительными параметрами
+    # запроса - checkin/checkout
 
     @allure.description("Проверка получения информации о конкретном бронировании по Id")
     @pytest.mark.positive
@@ -27,7 +35,7 @@ class TestGetAndCreateBooking:
     @allure.description("Проверка создания нового бронирования")
     @pytest.mark.positive
     def test_post_Create_New_Booking_expected_200(self, get_and_create_data):
-        response = HttpMethods.post(get_or_create_booking_url, body=get_and_create_data["body_for_create_booking"])
+        response = HttpMethods.post(get_all_ids_or_create_booking_url, body=get_and_create_data["body_for_create_booking"])
         assert response.status_code == 200, f'Статус-код некорректен, фактическое значение = {response.status_code}'
         response_json = response.json()
         assert get_and_create_data["body_for_create_booking"] == response_json.get("booking"), \

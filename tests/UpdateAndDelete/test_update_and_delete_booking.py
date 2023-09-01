@@ -24,7 +24,7 @@ class TestUpdateAndDeleteBooking:
     @allure.description("Проверка частичного обновления бронирования")
     @pytest.mark.positive
     def test_patch_Partial_Update_Booking_expected_200(self, update_and_delete_data, get_exist_booking_ids,
-                                              auth_token_in_cookie, check_partial_update):
+                                              auth_token_in_cookie, check_json_key_value):
         link_for_update_partial_booking = get_or_update_and_delete_booking_url + str(get_exist_booking_ids(1))
         response = HttpMethods.patch(link_for_update_partial_booking, body=update_and_delete_data[
             "body_for_partial_update_booking"], cookies=auth_token_in_cookie)
@@ -32,10 +32,8 @@ class TestUpdateAndDeleteBooking:
 
         # Проверка частичного обновления бронирования get-запросом
         check_put = HttpMethods.get(link_for_update_partial_booking)
-        check_json = check_partial_update(check_put)
-        assert update_and_delete_data["body_for_partial_update_booking"] == check_json, \
-            f'Get-запрос о свежесозданном бронировании содержит некорректную информацию, фактический ответ:\n ' \
-            f'{response.text}'
+        check_json_key_value(check_put, "firstname", "Tony", check_non_empty=False)
+        check_json_key_value(check_put, "lastname", "Stark", check_non_empty=False)
 
     @allure.description("Проверка удаления бронирования")
     @pytest.mark.positive

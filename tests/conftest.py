@@ -1,6 +1,6 @@
 import pytest
 import json
-from tests.config.configuration import get_or_create_booking_url, auth_token_url
+from tests.config.configuration import get_all_ids_or_create_booking_url, auth_token_url
 from utils.http_methods import HttpMethods
 
 
@@ -21,7 +21,7 @@ def auth_token_in_cookie():
 # Фикстура для получения существующего ID
 def get_exist_booking_ids():
     def function_get_exist_booking_ids(number):
-        response = HttpMethods.get(get_or_create_booking_url)
+        response = HttpMethods.get(get_all_ids_or_create_booking_url)
         assert response.status_code == 200, f'Не удалось получить существующий ID, статус-код = {response.status_code}'
         json_list = response.json()
         get_element = json_list[number]
