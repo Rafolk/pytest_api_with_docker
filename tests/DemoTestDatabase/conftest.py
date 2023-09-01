@@ -13,7 +13,6 @@ def db_connection():
         yield cursor
         cursor.close()
         connect_db.close()
-        print("\n[INFO] Подключение к БД закрыто.")
 
     except Exception as _ex:
         print("\n[INFO] Возникли ошибки при подключении к БД: ", _ex)

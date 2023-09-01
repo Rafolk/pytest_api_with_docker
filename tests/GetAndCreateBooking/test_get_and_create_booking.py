@@ -14,15 +14,43 @@ class TestGetAndCreateBooking:
         assert response.status_code == 200, f'Статус-код некорректен, фактическое значение = {response.status_code}'
         check_booking_ids(response)
 
-    @allure.description("Проверка параметризации запроса методом чёрного ящика")
+    @allure.description("Проверка запроса с фильтром по имени методом чёрного ящика")
     @pytest.mark.positive
-    def test_Get_parametrize_name_Booking_expected_200(self, get_parametrize_value):
-        new_link = get_all_ids_or_create_booking_url + f'?firstname={get_parametrize_value["firstname"]}&lastname={get_parametrize_value["lastname"]}'
-        response = HttpMethods.get(new_link)
-        assert response.status_code == 200, f'Статус-код некорректен, фактическое значение = {response.status_code}'
+    def test_Get_filter_name_Booking_expected_200(self, get_parametrize_value):
+        response = HttpMethods.get(get_all_ids_or_create_booking_url + f'?firstname={get_parametrize_value["firstname"]}&lastname={get_parametrize_value["lastname"]}')
+        assert response.status_code == 200, f'Статус-код запроса с фильтром некорректен, фактическое значение = {response.status_code}'
 
-    # Тут скоро будут добавлены более тщательные проверки ответа, а так же тесты с дополнительными параметрами
-    # запроса - checkin/checkout
+        # Проверка полученных Id на соответствие фильтру (в цикле, на случай нескольких совпадений по фильтру)
+        response_json = response.json()
+        for item in response_json:
+            booking_id = item["bookingid"]
+            check_response = HttpMethods.get(get_or_update_and_delete_booking_url + str(booking_id))
+            assert check_response.status_code == 200, f'Статус-код проверки запроса с фильтром некорректен, фактическое значение = {response.status_code}'
+            check_json = check_response.json()
+            assert get_parametrize_value["firstname"] == check_json.get("firstname"), f'Фактический firstname не ' \
+                                                                                   f'соответствует ожидаемому, фактическое значение = {get_parametrize_value["firstname"]}'
+            assert get_parametrize_value["lastname"] == check_json.get("lastname"), f'Фактический lastname не ' \
+                                                                                 f'соответствует ожидаемому, фактическое значение = {get_parametrize_value["lastname"]}'
+
+    @allure.description("Проверка запроса с фильтром по дате въезда и выезда методом чёрного ящика")
+    @pytest.mark.positive
+    def test_Get_filter_booking_dates_Booking_expected_200(self, get_parametrize_value):
+        response = HttpMethods.get(get_all_ids_or_create_booking_url + f'?checkin={get_parametrize_value["checkin"]}&checkout={get_parametrize_value["checkout"]}')
+        assert response.status_code == 200, f'Статус-код запроса с фильтром некорректен, фактическое значение =' \
+                                            f' {response.status_code}'
+
+        # Проверка полученных Id на соответствие фильтру (в цикле, на случай нескольких совпадений по фильтру)
+        response_json = response.json()
+        for item in response_json:
+            booking_id = item["bookingid"]
+            check_response = HttpMethods.get(get_or_update_and_delete_booking_url + str(booking_id))
+            assert check_response.status_code == 200, f'Статус-код проверки запроса с фильтром некорректен, фактическое значение = {response.status_code}'
+            check_json = check_response.json()
+            bookingdates = check_json.get("bookingdates")
+            assert get_parametrize_value["checkin"] == bookingdates.get("checkin"), f'Фактический checkin не соответствует ожидаемому, ' \
+                                                        f'фактическое значение = {get_parametrize_value["checkin"]}'
+            assert get_parametrize_value["checkout"] == bookingdates.get("checkout"), f'Фактический checkout не ' \
+                                                                                   f'соответствует ожидаемому, фактическое значение = {get_parametrize_value["checkout"]}'
 
     @allure.description("Проверка получения информации о конкретном бронировании по Id")
     @pytest.mark.positive
