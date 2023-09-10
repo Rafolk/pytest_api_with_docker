@@ -1,3 +1,4 @@
+import allure
 import pytest
 import json
 from tests.config.configuration import get_all_ids_or_create_booking_url, auth_token_url
@@ -52,5 +53,5 @@ def check_json_key_value():
                 f'Ошибка проверки непустого значения ключа {key_name}, фактическое значение: {json_key_value}'
             return 0
         assert json_key_value == expected_json_key_value, \
-            f'Ошибка проверки содержимого ключа {key_name}, фактическое значение: {json_key_value}'
+                f'Ошибка проверки содержимого ключа {key_name}, фактическое значение: {json_key_value}'
     return function_check_json_key_value
