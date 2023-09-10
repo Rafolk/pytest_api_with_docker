@@ -23,7 +23,7 @@ class TestGetAndCreateBooking:
 
         # Проверка полученных Id на соответствие фильтру (в цикле, на случай нескольких совпадений по фильтру)
         response_json = response.json()
-        assert response.text is not None, 'Пустой ответ.'
+        assert response_json[0] is not None, 'Пустой ответ.'
         for item in response_json:
             booking_id = item["bookingid"]
             check_response = HttpMethods.get(get_or_update_and_delete_booking_url + str(booking_id))
@@ -44,7 +44,7 @@ class TestGetAndCreateBooking:
 
         # Проверка полученных Id на соответствие фильтру (в цикле, на случай нескольких совпадений по фильтру)
         response_json = response.json()
-        assert response.text is not None, 'Пустой ответ.'
+        assert response_json[0] is not None, 'Пустой ответ.'
         for item in response_json:
             booking_id = item["bookingid"]
             check_response = HttpMethods.get(get_or_update_and_delete_booking_url + str(booking_id))
